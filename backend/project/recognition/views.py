@@ -2,17 +2,17 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .services import UsuarioService
+from .services import UserService
 
 
-class AutenticarUsuarioView(APIView):
+class AutenticarUserView(APIView):
     def post(self, request):
         try:
             if imagem_enviada := request.FILES.get("imagem"):
                 return (
                     Response({"nome": nome_usuario}, status=status.HTTP_200_OK)
                     if (
-                        nome_usuario := UsuarioService.autenticar_usuario(
+                        nome_usuario := UserService.autenticar_usuario(
                             imagem_enviada
                         )
                     )
@@ -34,14 +34,14 @@ class AutenticarUsuarioView(APIView):
             )
 
 
-class CadastrarUsuarioView(APIView):
+class CadastrarUserView(APIView):
     def post(self, request):
         try:
             # Obter a imagem enviada (se houver)
             imagem = request.FILES.get("imagem")
 
             # Chamar o serviço para cadastrar o usuário
-            dados, erros = UsuarioService.cadastrar_usuario(request.data, imagem)
+            dados, erros = UserService.cadastrar_usuario(request.data, imagem)
 
             if erros:
                 return Response(erros, status=status.HTTP_400_BAD_REQUEST)

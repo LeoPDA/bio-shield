@@ -3,11 +3,11 @@ import os
 import face_recognition
 from django.conf import settings
 
-from .repositories import UsuarioRepository
-from .serializers import UsuarioSerializer
+from .repositories import UserRepository
+from .serializers import UserSerializer
 
 
-class UsuarioService:
+class UserService:
     @staticmethod
     def autenticar_usuario(imagem_enviada):
         # Carregar a imagem enviada para comparação
@@ -20,11 +20,11 @@ class UsuarioService:
             return None
 
         # Obter todos os usuários cadastrados
-        usuarios = UsuarioRepository.get_all_usuarios()
+        users = UserRepository.get_all_usuarios()
 
-        for usuario in usuarios:
+        for user in users:
             # Carregar a imagem do usuário
-            imagem_usuario_array = face_recognition.load_image_file(usuario.imagem.path)
+            imagem_usuario_array = face_recognition.load_image_file(user.imagem.path)
             # Codificar a imagem do usuário
             imagem_usuario_encoding = face_recognition.face_encodings(
                 imagem_usuario_array
@@ -36,22 +36,22 @@ class UsuarioService:
             )
 
             if resultado[0]:  # Se as imagens forem iguais
-                return usuario.nome
+                return user.nome
 
         return None
 
     @staticmethod
     def cadastrar_usuario(data, imagem):
         # Inicializar o serializer
-        serializer = UsuarioSerializer(data=data)
+        serializer = UserSerializer(data=data)
 
         if serializer.is_valid():
             # Salvar o usuário
-            usuario = serializer.save()
+            user = serializer.save()
 
             # Renomear a imagem para o ID do usuário
             if imagem:
-                UsuarioService.salvar_imagem_usuario(usuario, imagem)
+                UserService.salvar_imagem_usuario(user, imagem)
 
             return (
                 serializer.data,
@@ -61,16 +61,16 @@ class UsuarioService:
         return None, serializer.errors  # Retorna erros se o serializer falhar
 
     @staticmethod
-    def salvar_imagem_usuario(usuario, imagem):
+    def salvar_imagem_usuario(user, imagem):
         # Define o caminho completo para salvar a imagem
         extensao = os.path.splitext(imagem.name)[
             1
         ]  # Mantém a extensão do arquivo (ex: .jpg, .png)
         novo_nome_arquivo = (
-            f"{usuario.id}{extensao}"  # Renomeia o arquivo com o ID do usuário
+            f"{user.id}{extensao}"  # Renomeia o arquivo com o ID do usuário
         )
         caminho_arquivo = os.path.join(
-            settings.MEDIA_ROOT, "usuarios", novo_nome_arquivo
+            settings.MEDIA_ROOT, "users", novo_nome_arquivo
         )
 
         # Salvar o arquivo renomeado
@@ -79,5 +79,5 @@ class UsuarioService:
                 destino.write(chunk)
 
         # Atualizar o campo de imagem no banco de dados
-        usuario.imagem = os.path.join("usuarios", novo_nome_arquivo)
-        usuario.save()
+        user.imagem = os.path.join("users", novo_nome_arquivo)
+        user.save()
