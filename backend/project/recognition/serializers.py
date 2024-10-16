@@ -7,27 +7,32 @@ from .models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(required=True)
+    access_level = serializers.CharField(required=True)
+    email = serializers.EmailField(required=True)
+    image = serializers.ImageField(required=True)  # Certifique-se de que é um ImageField
+
     class Meta:
         model = User
-        fields = ["id", "nome", "imagem"]
+        fields = ["id", "name", "email", "access_level", "image"]
 
     def create(self, validated_data):
-        imagem = validated_data.pop(
-            "imagem", None
-        )  # Remove a imagem dos dados validados
+        image = validated_data.pop(
+            "image", None
+        )  # Remove a image dos dados validados
 
         # Salva o usuário
         user = User.objects.create(**validated_data)
 
-        # Se uma imagem foi fornecida, trate-a
-        if imagem:
-            self.salvar_imagem_usuario(user, imagem)
+        # Se uma image foi fornecida, trate-a
+        if image:
+            self.salvar_image_usuario(user, image)
 
         return user
 
-    def salvar_imagem_usuario(self, user, imagem):
-        # Define o caminho completo para salvar a imagem
-        extensao = os.path.splitext(imagem.name)[
+    def salvar_image_usuario(self, user, image):
+        # Define o caminho completo para salvar a image
+        extensao = os.path.splitext(image.name)[
             1
         ]  # Mantém a extensão do arquivo (ex: .jpg, .png)
         novo_nome_arquivo = (
@@ -39,9 +44,9 @@ class UserSerializer(serializers.ModelSerializer):
 
         # Salvar o arquivo renomeado
         with open(caminho_arquivo, "wb+") as destino:
-            for chunk in imagem.chunks():
+            for chunk in image.chunks():
                 destino.write(chunk)
 
-        # Atualizar o campo de imagem no banco de dados
-        user.imagem = os.path.join("users", novo_nome_arquivo)
+        # Atualizar o campo de image no banco de dados
+        user.image = os.path.join("users", novo_nome_arquivo)
         user.save()
