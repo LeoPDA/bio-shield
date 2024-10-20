@@ -1,43 +1,25 @@
-
-
-
-import { ThemeProvider } from "@/components/ui/theme-provider"
-import { ModeToggle } from './components/ui/mode-toggle-theme'
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "@/components/ui/menubar"
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Menu from './components/ui/Menu';
+import Home from './pages/Home';
+import Nivel1 from './pages/Nivel1';
+import Nivel2 from './pages/Nivel2';
+import Nivel3 from './pages/Nivel3';
 
 function App() {
 
 
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className="Navigation">
-      <Menubar>
-          <MenubarMenu>
-            <MenubarTrigger>File</MenubarTrigger>
-            <MenubarContent>
-              <MenubarItem>
-                New Tab <MenubarShortcut>⌘T</MenubarShortcut>
-              </MenubarItem>
-              <MenubarItem>New Window</MenubarItem>
-              <MenubarSeparator />
-              <MenubarItem>Share</MenubarItem>
-              <MenubarSeparator />
-              <MenubarItem>Print</MenubarItem>
-            </MenubarContent>
-          </MenubarMenu>
-        </Menubar>
-        <ModeToggle />
+    <Router>
+      <Menu />
+      <div className="content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/nivel1" element={<Nivel1 />} />
+          <Route path="/nivel1/nivel2" element={<Nivel2 />} />
+          <Route path="/nivel1/nivel2/nivel3" element={<Nivel3 />} />
+        </Routes>
       </div>
-
-    </ThemeProvider>
+    </Router>
   )
 }
 
