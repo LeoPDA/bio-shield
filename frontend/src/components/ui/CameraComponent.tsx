@@ -47,10 +47,10 @@ const CameraComponent: React.FC = () => {
   // };
 
   return (
-    <div>
-      <video ref={videoRef} autoPlay width="100%" height="480" />
+    <div >
+      <video ref={videoRef} autoPlay width="680" height="480" />
       <button onClick={captureImage}>Capturar Imagem</button>
-      <canvas ref={canvasRef} width="100%" height="480" style={{ display: 'none' }} />
+      <canvas ref={canvasRef} width="680" height="480" style={{ display: 'none' }} />
       <button onClick={startCamera}>Iniciar Câmera</button>
     </div>
   );
