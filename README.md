@@ -4,8 +4,8 @@
 
 Bio Shield: SISTEMA DE IDENTIFICAÇÃO E AUTENTICAÇÃO BIOMÉTRICA FACIAL é um projeto tem como objetivo demonstrar a implementação de um sistema de segurança baseado em validação biométrica facial, garantindo o acesso ao cofre oculto no Ministério do Meio Ambiente. O sistema será estruturado em três níveis de segurança:
 
-Nível 1: Acesso concedido a indivíduos com permissão geral.
-Nível 2: Acesso restrito a diretores de divisões.
+Nível 1: Acesso concedido a indivíduos com permissão geral. <br>
+Nível 2: Acesso restrito a diretores de divisões. <br>
 Nível 3: Acesso exclusivo ao ministro do Meio Ambiente.
 
 Através dessa abordagem, buscamos assegurar que apenas usuários autorizados possam acessar informações sensíveis, contribuindo para a proteção de dados críticos.
@@ -17,7 +17,7 @@ Bio-Shield
 ├── backend  # Código-fonte e configurações do backend do projeto em Django.
 │   ├── project  # 
 │
-├── mobile  # Código-fonte e configurações do React
+├── frontend  # Código-fonte e configurações do React
 │   ├── 
 │
 └── README.md  # Documentação principal do projeto.
@@ -31,7 +31,7 @@ Bio-Shield
 
 ### Frontend
 
-- [**React**]([https://react/](https://react.dev/))
+- [**React**](https://react.dev/)
 
 ### Banco de Dados
 
