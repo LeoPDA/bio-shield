@@ -1,61 +1,31 @@
-import { Button } from "@/components/ui/button";
-import CameraComponent from "@/components/ui/CameraComponent";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Camera } from "lucide-react";
-import { useState } from "react";
+import { Card } from "@/components/ui/card";
+
+
 
 const Home = () => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-      <div className="w-full max-w-md space-y-8 bg-white p-6 rounded-xl shadow-md">
-        <div className="text-center">
-          <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
-            Bio Shield
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Sistema de Autenticação Biométrica para Acesso ao Cofre de Segurança
-            Máxima
-          </p>
-        </div>
 
-        <div className="mt-8 space-y-6">
-          <div>
-            <Button
-              onClick={() => setIsDialogOpen(true)}
-              className="w-full flex items-center justify-center px-4 py-2 text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              <Camera className="mr-2 h-5 w-5" />
-              Capturar Foto para Autenticação
-            </Button>
-          </div>
+    <div>
 
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Captura de image</DialogTitle>
-              </DialogHeader>
-              <CameraComponent />
-              <DialogFooter>
-                <Button
-                  variant="secondary"
-                  onClick={() => setIsDialogOpen(false)}
-                >
-                  Cancelar
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </div>
+      <h1>Bio Shield</h1>
+
+      <div className="py-6">
+        <h2>Bem-vindo ao Bio Shield</h2>
+
+        <span>O Bio Shield é um sistema de identificação e autenticação biométrica facial, projetado para garantir a segurança de informações sensíveis no Ministério do Meio Ambiente. Com tecnologia de ponta, nossa solução oferece um acesso seguro e controlado ao cofre oculto, estruturado em três níveis de segurança</span>
+
+        <Card className="py-6">Nível 1: Acesso concedido a indivíduos com permissão geral.</Card>
+        <Card className="py-6">Nível 2: Acesso restrito a diretores de divisões.</Card>
+        <Card className="py-6">Nível 3: Acesso exclusivo ao ministro do Meio Ambiente.</Card>
       </div>
-    </main>
+
+      <div>Nossa missão é assegurar que somente usuários autorizados possam acessar dados críticos, protegendo a integridade e a confidencialidade das informações. Agradecemos por fazer parte deste compromisso com a segurança e a proteção de dados.</div>
+
+
+
+    </div>
+
   );
 };
 

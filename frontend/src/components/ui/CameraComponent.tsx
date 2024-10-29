@@ -1,5 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import { useAuth } from "@/components/ui/Login/AuthContext"; // Importando o contexto de autenticação
 
 const CameraComponent: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -7,6 +8,7 @@ const CameraComponent: React.FC = () => {
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [showPreview, setShowPreview] = useState<boolean>(false);
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
+  const { login } = useAuth(); // Pegando a função login do contexto
 
   const startCamera = async () => {
     try {
@@ -15,23 +17,24 @@ const CameraComponent: React.FC = () => {
           video: true,
         });
         videoRef.current.srcObject = stream;
-        setMediaStream(stream); // Armazena o stream
+        setMediaStream(stream);
       }
     } catch (error) {
       console.error("Erro ao acessar a câmera:", error);
       Swal.fire({
         title: "Erro!",
-        text: "Não foi possível acessar a câmera. Verifique se as permissões estão habilitadas",
+        text: "Não foi possível acessar a câmera. Verifique se as permissões estão habilitadas.",
         icon: "error",
-        confirmButtonText: "Ok",
+        showConfirmButton: false,
+        timer: 1500
       });
     }
   };
 
   const stopCamera = () => {
     if (mediaStream) {
-      mediaStream.getTracks().forEach((track) => track.stop()); // Para todos os tracks do stream
-      setMediaStream(null); // Limpa a referência do stream
+      mediaStream.getTracks().forEach((track) => track.stop());
+      setMediaStream(null);
     }
   };
 
@@ -44,7 +47,7 @@ const CameraComponent: React.FC = () => {
         const imageData = canvas.toDataURL("image/png");
         setCapturedImage(imageData);
         setShowPreview(true);
-        stopCamera(); // Para a câmera após capturar a imagem
+        stopCamera();
       }
     }
   };
@@ -52,49 +55,64 @@ const CameraComponent: React.FC = () => {
   const handleRetake = () => {
     setCapturedImage(null);
     setShowPreview(false);
-    startCamera(); // Reinicia a câmera se o usuário quiser tirar outra foto
+    startCamera();
   };
 
   const sendToServer = async (imageData: string) => {
-    const blob = await (await fetch(imageData)).blob(); // Converte a imagem base64 em Blob
+    const blob = await (await fetch(imageData)).blob();
     const formData = new FormData();
-    formData.append("image", blob, "captured_image.png"); // Adiciona o blob ao FormData
+    formData.append("image", blob, "captured_image.png");
 
     const response = await fetch(
       "http://localhost:8000/api/recognition/auth/",
       {
         method: "POST",
-        body: formData, // Envia o FormData diretamente
+        body: formData,
       }
     );
 
     const result = await response.json();
     console.log(result);
-    return result;
+    return result; // Retorna o resultado, incluindo o nível de acesso
   };
 
   const handleSend = async () => {
     if (capturedImage) {
       try {
-        await sendToServer(capturedImage); // Envia a imagem para o servidor
+        const result = await sendToServer(capturedImage);
+
+        console.log(result);
+
+        if (result.access_level) {
+          login(result.access_level); // Login com o nível de acesso retornado
+        }
         Swal.fire({
           title: "Sucesso!",
           text: "Imagem enviada com sucesso!",
           icon: "success",
-          confirmButtonText: "Ok",
+          showConfirmButton: false,
+          timer: 1500
         });
-        handleRetake(); // Limpa a imagem após o envio
+        handleRetake();
       } catch (error) {
         console.error("Erro ao enviar a imagem:", error);
         Swal.fire({
           title: "Erro!",
           text: "Houve um problema ao enviar a imagem.",
           icon: "error",
-          confirmButtonText: "Ok",
+          showConfirmButton: false,
+          timer: 1500
         });
       }
     }
   };
+
+  useEffect(() => {
+    startCamera(); // Iniciar a câmera quando o componente for montado
+    return () => {
+      stopCamera(); // Parar a câmera quando o componente for desmontado
+    };
+  }, []);
 
   return (
     <div>
@@ -112,12 +130,7 @@ const CameraComponent: React.FC = () => {
           <button onClick={handleRetake}>Tirar Outra Foto</button>
         </>
       )}
-      <canvas
-        ref={canvasRef}
-        width="680"
-        height="480"
-        style={{ display: "none" }}
-      />
+      <canvas ref={canvasRef} width="680" height="480" style={{ display: "none" }} />
     </div>
   );
 };
