@@ -3,72 +3,84 @@ import os
 import face_recognition
 from django.conf import settings
 
-from .repositories import UserRepository
-from .serializers import UserSerializer
+from django.core.exceptions import ValidationError
+from . import models
 
 class UserService:
     @staticmethod
-    def autenticar_usuario(image_enviada):
-        # Carregar a imagem enviada para comparação
-        image_enviada_array = face_recognition.load_image_file(image_enviada)
-        try:
-            image_enviada_encoding = face_recognition.face_encodings(image_enviada_array)[0]
-        except IndexError:
-            return None  # Caso a imagem enviada não contenha um rosto válido
+    def authenticate_user(image_sent: str, limite_similaridade: float = 0.6):
 
-        # Obter todos os usuários cadastrados
-        users = UserRepository.get_all_usuarios()
+        image_sent_array = face_recognition.load_image_file(image_sent)
+        
+        try:
+            image_sent_encoding = face_recognition.face_encodings(image_sent_array)[0]
+        except IndexError:
+            return None
+
+        users = models.User.objects.prefetch_related('imagens').all()
+
+        combination = 0
+        results = []
 
         for user in users:
-            # Carregar a imagem do usuário cadastrado
-            image_usuario_array = face_recognition.load_image_file(user.image.path)
-            image_usuario_encoding = face_recognition.face_encodings(image_usuario_array)[0]
+            for image_user in user.imagens.all():
+                image_user_array = face_recognition.load_image_file(image_user.image.path)
+                
+                try:
+                    image_user_encoding = face_recognition.face_encodings(image_user_array)[0]
+                except IndexError:
+                    continue
 
-            # Comparar as imagens
-            resultado = face_recognition.compare_faces([image_usuario_encoding], image_enviada_encoding)
+                # Calcular a distância entre as imagens
+                distance = face_recognition.face_distance([image_user_encoding], image_sent_encoding)[0]
 
-            if resultado[0]:  # Se as imagens forem iguais, retorne o usuário
-                return user  # Retorna o objeto `User`
+                # Verificar se a distância está abaixo do limite de similaridade
+                if distance < limite_similaridade:
+                    combination += 1
+                    results.append((user, distance))
 
-        return None  # Se nenhum usuário foi encontrado
+        # Imprimir o número de combinações encontradas
+        print(f"A imagem enviada combina com {combination} usuário(s).")
+
+        # Se houver usuários semelhantes, retornar o que tiver a menor distância
+        if results:
+            user_more_similar = min(results, key=lambda x: x[1])
+            return user_more_similar[0]  # Retorna o objeto `user`, que é o mais similar
+
+        return None
 
 
     @staticmethod
-    def cadastrar_usuario(data, image):
-        # Adicionar a image aos dados enviados
-        data["image"] = image
+    def register_user(data):
+        # Verifica se o email já está em uso
+        if models.User.objects.filter(email=data["email"]).exists():
+            return None, {"error": "Email já está em uso."}
 
-        # Inicializar o serializer com todos os dados (incluindo a image)
-        serializer = UserSerializer(data=data)
+        user = models.User(name=data["name"], email=data["email"], access_level=data["access_level"])
+        try:
+            user.full_clean()
+            user.save() 
+        except ValidationError as e:
+            return None, {"error": str(e)}
 
-        if serializer.is_valid():
-            # Salvar o usuário no banco de dados, incluindo a image
-            serializer.save()
+        return {"id": user.id, "name": user.name, "email": user.email, "access_level": user.access_level}, None
 
-            # Não precisa mais salvar a image manualmente, pois o serializer já lidou com isso
-
-            return serializer.data, None
-
-        return None, serializer.errors
-    
     @staticmethod
-    def salvar_image_usuario(user, image):
-        # Define o caminho completo para salvar a image
-        extensao = os.path.splitext(image.name)[
-            1
-        ]  # Mantém a extensão do arquivo (ex: .jpg, .png)
-        novo_nome_arquivo = (
-            f"{user.id}{extensao}"  # Renomeia o arquivo com o ID do usuário
-        )
-        caminho_arquivo = os.path.join(
-            settings.MEDIA_ROOT, "users", novo_nome_arquivo
-        )
+    def upload_image_user(user_id, image):
+        try:
+            user = models.User.objects.get(id=user_id)
+        except models.User.DoesNotExist:
+            return None, {"error": "Usuário não encontrado."}
 
-        # Salvar o arquivo renomeado
+        original_name = image.name 
+        caminho_arquivo = os.path.join(settings.MEDIA_ROOT, "users", original_name)
+
         with open(caminho_arquivo, "wb+") as destino:
             for chunk in image.chunks():
                 destino.write(chunk)
 
-        # Atualizar o campo de image no banco de dados
-        user.image = os.path.join("users", novo_nome_arquivo)
-        user.save()
+        # Atualizar o campo de imagem no banco de dados
+        image_user = models.ImageUser(user=user, image=os.path.join("users", original_name))
+        image_user.save()  # Salva a imagem vinculada ao usuário
+
+        return {"id": user.id, "image": original_name}, None
