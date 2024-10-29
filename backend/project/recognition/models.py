@@ -1,14 +1,17 @@
-import uuid
-
 from django.db import models
 
-
 class User(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
-    access_level = models.CharField(null=False, blank=False)
-    email = models.EmailField()
-    image = models.ImageField(upload_to="users/", null=False, blank=False)
+    email = models.EmailField(unique=True)
+    access_level = models.IntegerField(null=False)
 
     class Meta:
         db_table = "recognition_user"
+
+
+class ImageUser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='imagens')
+    image = models.ImageField(upload_to="users/", null=False, blank=False)
+
+    def __str__(self):
+        return f"Imagem de {self.user.name}"
