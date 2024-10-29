@@ -1,8 +1,9 @@
 from django.urls import path
 
-from .views import AutenticarUserView, CadastrarUserView
+from .views import AuthenticateUserView, RegisterUserView, UploadImageView
 
 urlpatterns = [
-    path("register/", CadastrarUserView.as_view(), name="cadastrar_usuario"),
-    path("auth/", AutenticarUserView.as_view(), name="autenticar_usuario"),
+    path("register/", RegisterUserView.as_view(), name="register_user"),
+    path("auth/", AuthenticateUserView.as_view(), name="authenticate_user"),
+    path("upload/image/<str:user_id>/", UploadImageView.as_view(), name="upload_image")
 ]

@@ -40,7 +40,7 @@ const Home = () => {
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Captura de Imagem</DialogTitle>
+                <DialogTitle>Captura de image</DialogTitle>
               </DialogHeader>
               <CameraComponent />
               <DialogFooter>
