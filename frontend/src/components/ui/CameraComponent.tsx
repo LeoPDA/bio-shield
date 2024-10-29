@@ -55,32 +55,46 @@ const CameraComponent: React.FC = () => {
     startCamera(); // Reinicia a câmera se o usuário quiser tirar outra foto
   };
 
-  const handleSend = async () => {
-    if (capturedImage) {
-      // Chame a função para enviar a imagem ao servidor aqui.
-      // await sendToServer(capturedImage);
-      console.log("Imagem enviada:", capturedImage);
-      Swal.fire({
-        title: "Sucesso!",
-        text: "Imagem enviada com sucesso!",
-        icon: "success",
-        confirmButtonText: "Ok",
-      });
-      handleRetake(); // Limpa a imagem após o envio
-    }
+  const sendToServer = async (imageData: string) => {
+    const blob = await (await fetch(imageData)).blob(); // Converte a imagem base64 em Blob
+    const formData = new FormData();
+    formData.append("image", blob, "captured_image.png"); // Adiciona o blob ao FormData
+
+    const response = await fetch(
+      "http://localhost:8000/api/recognition/auth/",
+      {
+        method: "POST",
+        body: formData, // Envia o FormData diretamente
+      }
+    );
+
+    const result = await response.json();
+    console.log(result);
+    return result;
   };
 
-  // const sendToServer = async (imageData: string) => {
-  //   const response = await fetch('http://localhost:5000/upload', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({ image: imageData }),
-  //   });
-  //   const result = await response.json();
-  //   console.log(result);
-  // };
+  const handleSend = async () => {
+    if (capturedImage) {
+      try {
+        await sendToServer(capturedImage); // Envia a imagem para o servidor
+        Swal.fire({
+          title: "Sucesso!",
+          text: "Imagem enviada com sucesso!",
+          icon: "success",
+          confirmButtonText: "Ok",
+        });
+        handleRetake(); // Limpa a imagem após o envio
+      } catch (error) {
+        console.error("Erro ao enviar a imagem:", error);
+        Swal.fire({
+          title: "Erro!",
+          text: "Houve um problema ao enviar a imagem.",
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      }
+    }
+  };
 
   return (
     <div>
