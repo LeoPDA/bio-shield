@@ -7,34 +7,31 @@ from .services import UserService
 class AuthenticateUserView(APIView):
     def post(self, request):
         try:
-            if image_sent := request.FILES.get("image"):
-                user = UserService.authenticate_user(image_sent)
-
-                if user:
-                    # Verificar se o nível de acesso é um dos permitidos
-                    if user.access_level in [1, 2, 3]:
-                        return Response(
-                            {"name": user.name, "access_level": user.access_level},
-                            status=status.HTTP_200_OK
-                        )
-                    else:
-                        # Se o nível de acesso não for permitido
-                        return Response(
-                            {"error": "Nível de acesso não autorizado."},
-                            status=status.HTTP_403_FORBIDDEN
-                        )
-                else:
-                    # Caso nenhum usuário tenha sido encontrado
-                    return Response(
-                        {"error": "Usuário não encontrado."},
-                        status=status.HTTP_404_NOT_FOUND
-                    )
-            else:
+            if not (image_sent := request.FILES.get("image")):
                 return Response(
                     {"error": "image não fornecida."},
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
+            if user := UserService.authenticate_user(image_sent):
+                    # Verificar se o nível de acesso é um dos permitidos
+                return (
+                    Response(
+                        {"name": user.name, "access_level": user.access_level},
+                        status=status.HTTP_200_OK,
+                    )
+                    if user.access_level in [1, 2, 3]
+                    else Response(
+                        {"error": "Nível de acesso não autorizado."},
+                        status=status.HTTP_403_FORBIDDEN,
+                    )
+                )
+            else:
+                # Caso nenhum usuário tenha sido encontrado
+                return Response(
+                    {"error": "Usuário não encontrado."},
+                    status=status.HTTP_404_NOT_FOUND
+                )
         except Exception as e:
             return Response(
                 {"error": f"Erro durante autenticação: {str(e)}"},
