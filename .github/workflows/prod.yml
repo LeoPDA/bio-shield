@@ -1,0 +1,18 @@
+name: Deploy APS Bio Shield
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    name: "Build and push"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Say Hello world
+        run: echo "Hello world"
