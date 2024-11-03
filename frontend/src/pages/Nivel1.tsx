@@ -22,7 +22,6 @@ const Nivel1 = () => {
 
   return (
     <div>
-      <h1>Camada 1</h1>
       <div className="container mx-auto py-10">
         <DataTable data={data} columns={columns} />
       </div>
