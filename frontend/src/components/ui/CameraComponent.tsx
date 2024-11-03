@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useAuth } from "@/contexts/AuthContext"; // Importando o contexto de autenticação
+import React, { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
-import { useAuth } from "@/components/ui/Login/AuthContext"; // Importando o contexto de autenticação
 
 const CameraComponent: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -26,7 +26,7 @@ const CameraComponent: React.FC = () => {
         text: "Não foi possível acessar a câmera. Verifique se as permissões estão habilitadas.",
         icon: "error",
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       });
     }
   };
@@ -91,7 +91,7 @@ const CameraComponent: React.FC = () => {
           text: "Imagem enviada com sucesso!",
           icon: "success",
           showConfirmButton: false,
-          timer: 1500
+          timer: 1500,
         });
         handleRetake();
       } catch (error) {
@@ -101,7 +101,7 @@ const CameraComponent: React.FC = () => {
           text: "Houve um problema ao enviar a imagem.",
           icon: "error",
           showConfirmButton: false,
-          timer: 1500
+          timer: 1500,
         });
       }
     }
@@ -130,7 +130,12 @@ const CameraComponent: React.FC = () => {
           <button onClick={handleRetake}>Tirar Outra Foto</button>
         </>
       )}
-      <canvas ref={canvasRef} width="680" height="480" style={{ display: "none" }} />
+      <canvas
+        ref={canvasRef}
+        width="680"
+        height="480"
+        style={{ display: "none" }}
+      />
     </div>
   );
 };
