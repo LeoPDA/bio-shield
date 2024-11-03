@@ -1,38 +1,34 @@
-import { Table, TableHeader, TableBody, TableRow, TableCell } from '../components/ui/table';
+import { columns } from "@/components/data-table/columns";
+import { DataTable } from "@/components/data-table/data-table";
+import { Toxin } from "@/schemas/toxin-schema";
+import { useEffect, useState } from "react";
 
-const data = [
-    { id: 1, name: 'Item 1', value: 'Valor 1' },
-    { id: 2, name: 'Item 2', value: 'Valor 2' },
-    { id: 3, name: 'Item 3', value: 'Valor 3' },
-    { id: 1, name: 'Item 4', value: 'Valor 4' },
-    { id: 2, name: 'Item 5', value: 'Valor 5' },
-    { id: 3, name: 'Item 6', value: 'Valor 6' },
-];// Importando os componentes de tabela do Shadcn
+async function getData(): Promise<Toxin[]> {
+  const response = await fetch(
+    "http://localhost:8000/api/toxins?access_level=2"
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return (await response.json()) as Toxin[];
+}
 
 const Nivel2 = () => {
-    return (
-        <div>
-            <h1>Camada 2</h1>
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableCell>ID</TableCell>
-                        <TableCell>Nome</TableCell>
-                        <TableCell>Valor</TableCell>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {data.map((item) => (
-                        <TableRow key={item.id}>
-                            <TableCell>{item.id}</TableCell>
-                            <TableCell>{item.name}</TableCell>
-                            <TableCell>{item.value}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </div>
-    );
+  const [data, setData] = useState<Toxin[]>([]);
+
+  useEffect(() => {
+    getData().then((data) => setData(data));
+  }, []);
+
+  return (
+    <div>
+      <div className="container mx-auto py-10">
+        <DataTable data={data} columns={columns} />
+      </div>
+    </div>
+  );
 };
 
 export default Nivel2;

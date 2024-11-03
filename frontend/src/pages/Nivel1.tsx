@@ -4,7 +4,9 @@ import { Toxin } from "@/schemas/toxin-schema";
 import { useEffect, useState } from "react";
 
 async function getData(): Promise<Toxin[]> {
-  const response = await fetch("http://localhost:8000/api/toxins");
+  const response = await fetch(
+    "http://localhost:8000/api/toxins?access_level=1"
+  );
 
   if (!response.ok) {
     throw new Error("Failed to fetch data");
