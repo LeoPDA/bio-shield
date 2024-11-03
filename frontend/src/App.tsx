@@ -44,15 +44,15 @@ function App() {
               element={<PrivateRoute element={<Home />} requiredLevel={1} />}
             />
             <Route
-              path="/nivel1"
+              path="/nivel/1"
               element={<PrivateRoute element={<Nivel1 />} requiredLevel={1} />}
             />
             <Route
-              path="/nivel1/nivel2"
+              path="/nivel/2"
               element={<PrivateRoute element={<Nivel2 />} requiredLevel={2} />}
             />
             <Route
-              path="/nivel1/nivel2/nivel3"
+              path="/nivel/3"
               element={<PrivateRoute element={<Nivel3 />} requiredLevel={3} />}
             />
           </Routes>

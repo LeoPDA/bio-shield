@@ -51,7 +51,7 @@ const Auth = () => {
               <DialogHeader>
                 <DialogTitle>Captura de image</DialogTitle>
               </DialogHeader>
-              <CameraComponent />
+              <CameraComponent openDialog={setIsDialogOpen} />
               <DialogFooter>
                 <Button variant="secondary" onClick={() => handleLogin(3)}>
                   Cancelar

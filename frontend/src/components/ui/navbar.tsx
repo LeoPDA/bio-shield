@@ -33,7 +33,7 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/nivel1" className="flex">
+            <Link to="/nivel/1" className="flex">
               Nível 1{" "}
               {!(user && user.accessLevel >= 1) && (
                 <Lock className="inline ml-1" />
@@ -41,7 +41,7 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/nivel1/nivel2" className="flex">
+            <Link to="/nivel/2" className="flex">
               Nível 2{" "}
               {!(user && user.accessLevel >= 2) && (
                 <Lock className="inline ml-1" />
@@ -49,7 +49,7 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/nivel1/nivel2/nivel3" className="flex">
+            <Link to="/nivel/3" className="flex">
               Nível 3{" "}
               {!(user && user.accessLevel >= 3) && (
                 <Lock className="inline ml-1" />
@@ -77,7 +77,7 @@ const Navbar = () => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Link to="/nivel1" className="flex">
+                  <Link to="/nivel/1" className="flex">
                     Nível 1{" "}
                     {!(user && user.accessLevel >= 1) && (
                       <Lock className="inline ml-1" />
@@ -85,7 +85,7 @@ const Navbar = () => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Link to="/nivel1/nivel2" className="flex">
+                  <Link to="/nivel/2" className="flex">
                     Nível 2{" "}
                     {!(user && user.accessLevel >= 2) && (
                       <Lock className="inline ml-1" />
@@ -93,7 +93,7 @@ const Navbar = () => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Link to="/nivel1/nivel2/nivel3" className="flex">
+                  <Link to="/nivel/3" className="flex">
                     Nível 3{" "}
                     {!(user && user.accessLevel >= 3) && (
                       <Lock className="inline ml-1" />
