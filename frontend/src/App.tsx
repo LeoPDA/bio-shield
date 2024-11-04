@@ -13,6 +13,7 @@ import Home from "./pages/Home";
 import Nivel1 from "./pages/Nivel1";
 import Nivel2 from "./pages/Nivel2";
 import Nivel3 from "./pages/Nivel3";
+import Toxin from "./pages/Toxin";
 
 interface PrivateRouteProps {
   element: ReactNode; // ou React.ReactElement se preferir
@@ -54,6 +55,10 @@ function App() {
             <Route
               path="/nivel/3"
               element={<PrivateRoute element={<Nivel3 />} requiredLevel={3} />}
+            />
+            <Route
+              path="/toxins/:id"
+              element={<PrivateRoute element={<Toxin />} requiredLevel={1} />}
             />
           </Routes>
         </div>
