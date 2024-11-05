@@ -15,7 +15,7 @@ const Menu = () => {
           <span>
             <Link to="/home">
               Home{" "}
-              {!(user && user.accessLevel >= 1) && (
+              {!(user && user.access_level >= 1) && (
                 <Lock className="inline ml-1" />
               )}
             </Link>
@@ -23,21 +23,21 @@ const Menu = () => {
           <MenubarSeparator />
           <Link to="/nivel1" className="flex">
             Nível 1{" "}
-            {!(user && user.accessLevel >= 1) && (
+            {!(user && user.access_level >= 1) && (
               <Lock className="inline ml-1" />
             )}
           </Link>
 
           <Link to="/nivel1/nivel2" className="flex">
             Nível 2{" "}
-            {!(user && user.accessLevel >= 2) && (
+            {!(user && user.access_level >= 2) && (
               <Lock className="inline ml-1" />
             )}
           </Link>
 
           <Link to="/nivel1/nivel2/nivel3" className="flex">
             Nível 3{" "}
-            {!(user && user.accessLevel >= 3) && (
+            {!(user && user.access_level >= 3) && (
               <Lock className="inline ml-1" />
             )}
           </Link>

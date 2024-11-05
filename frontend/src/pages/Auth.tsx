@@ -11,14 +11,15 @@ import { Camera } from "lucide-react";
 import { useState } from "react";
 
 import { useAuth } from "@/contexts/AuthContext";
+import { User } from "@/schemas/user-schema";
 
 const Auth = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const { login } = useAuth();
 
-  const handleLogin = (accessLevel: number) => {
-    login(accessLevel);
+  const handleLogin = (user: User) => {
+    login(user);
     setIsDialogOpen(false); // Fechar o diálogo após login
   };
 
@@ -53,7 +54,7 @@ const Auth = () => {
               </DialogHeader>
               <CameraComponent openDialog={setIsDialogOpen} />
               <DialogFooter>
-                <Button variant="secondary" onClick={() => handleLogin(3)}>
+                <Button variant="secondary" onClick={() => setIsDialogOpen(false)}>
                   Cancelar
                 </Button>
               </DialogFooter>

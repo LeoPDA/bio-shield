@@ -27,7 +27,7 @@ const Navbar = () => {
           <li className="text-primary font-medium">
             <Link to="/home">
               Home{" "}
-              {!(user && user.accessLevel >= 1) && (
+              {!(user && user.access_level >= 1) && (
                 <Lock className="inline ml-1" />
               )}
             </Link>
@@ -35,7 +35,7 @@ const Navbar = () => {
           <li>
             <Link to="/nivel/1" className="flex">
               Nível 1{" "}
-              {!(user && user.accessLevel >= 1) && (
+              {!(user && user.access_level >= 1) && (
                 <Lock className="inline ml-1" />
               )}
             </Link>
@@ -43,7 +43,7 @@ const Navbar = () => {
           <li>
             <Link to="/nivel/2" className="flex">
               Nível 2{" "}
-              {!(user && user.accessLevel >= 2) && (
+              {!(user && user.access_level >= 2) && (
                 <Lock className="inline ml-1" />
               )}
             </Link>
@@ -51,7 +51,7 @@ const Navbar = () => {
           <li>
             <Link to="/nivel/3" className="flex">
               Nível 3{" "}
-              {!(user && user.accessLevel >= 3) && (
+              {!(user && user.access_level >= 3) && (
                 <Lock className="inline ml-1" />
               )}
             </Link>
@@ -71,7 +71,7 @@ const Navbar = () => {
                 <DropdownMenuItem>
                   <Link to="/home">
                     Home{" "}
-                    {!(user && user.accessLevel >= 1) && (
+                    {!(user && user.access_level >= 1) && (
                       <Lock className="inline ml-1" />
                     )}
                   </Link>
@@ -79,7 +79,7 @@ const Navbar = () => {
                 <DropdownMenuItem>
                   <Link to="/nivel/1" className="flex">
                     Nível 1{" "}
-                    {!(user && user.accessLevel >= 1) && (
+                    {!(user && user.access_level >= 1) && (
                       <Lock className="inline ml-1" />
                     )}
                   </Link>
@@ -87,7 +87,7 @@ const Navbar = () => {
                 <DropdownMenuItem>
                   <Link to="/nivel/2" className="flex">
                     Nível 2{" "}
-                    {!(user && user.accessLevel >= 2) && (
+                    {!(user && user.access_level >= 2) && (
                       <Lock className="inline ml-1" />
                     )}
                   </Link>
@@ -95,7 +95,7 @@ const Navbar = () => {
                 <DropdownMenuItem>
                   <Link to="/nivel/3" className="flex">
                     Nível 3{" "}
-                    {!(user && user.accessLevel >= 3) && (
+                    {!(user && user.access_level >= 3) && (
                       <Lock className="inline ml-1" />
                     )}
                   </Link>

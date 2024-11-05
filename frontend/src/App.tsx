@@ -24,8 +24,13 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
   element,
   requiredLevel,
 }) => {
-  const { user } = useAuth();
-  return user && user.accessLevel >= requiredLevel ? (
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
+
+  return user && user.access_level >= requiredLevel ? (
     <>{element}</>
   ) : (
     <Navigate to="/" />

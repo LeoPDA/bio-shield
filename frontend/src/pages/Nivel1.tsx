@@ -17,15 +17,22 @@ async function getData(): Promise<Toxin[]> {
 
 const Nivel1 = () => {
   const [data, setData] = useState<Toxin[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getData().then((data) => setData(data));
+    getData()
+      .then((data) => setData(data))
+      .finally(() => setLoading(false));
   }, []);
 
   return (
     <div>
       <div className="container mx-auto py-10">
-        <DataTable data={data} columns={columns} />
+        {loading ? (
+          <div className="text-center text-gray-500">Carregando...</div>
+        ) : (
+          <DataTable data={data} columns={columns} />
+        )}
       </div>
     </div>
   );

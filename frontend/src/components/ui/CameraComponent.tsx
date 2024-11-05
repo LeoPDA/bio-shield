@@ -88,10 +88,8 @@ const CameraComponent: React.FC<CameraComponentProps> = ({ openDialog }) => {
       try {
         const result = await sendToServer(capturedImage);
 
-        console.log(result);
-
-        if (result.access_level) {
-          login(result.access_level); // Login com o nível de acesso retornado
+        if (result) {
+          login(result); // Login com o nível de acesso retornado
           openDialog(false); // Fechar o diálogo após login
           Swal.fire({
             title: "Sucesso!",
