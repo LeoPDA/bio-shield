@@ -1,5 +1,6 @@
 import { User } from "@/schemas/user-schema";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 interface AuthContextType {
   user: User | null;
@@ -32,7 +33,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const logout = () => {
     setUser(null);
+
     localStorage.removeItem("user");
+
+    Swal.fire({
+      title: "Logged out",
+      icon: "success",
+    });
   };
 
   return (

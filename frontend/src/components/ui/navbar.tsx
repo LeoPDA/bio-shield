@@ -11,9 +11,10 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { ModeToggle } from "./mode-toggle-theme";
 import { ThemeProvider } from "./theme-provider";
+import { UserNav } from "./user-nav";
 
 const Navbar = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -104,7 +105,10 @@ const Navbar = () => {
             </DropdownMenu>
           </div>
 
-          <ModeToggle />
+          <div className="flex items-center gap-4">
+            <ModeToggle />
+            {user && <UserNav user={user} logout={logout} />}
+          </div>
         </div>
       </Card>
     </ThemeProvider>
