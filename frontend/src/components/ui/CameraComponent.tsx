@@ -78,9 +78,11 @@ const CameraComponent: React.FC<CameraComponentProps> = ({ openDialog }) => {
       }
     );
 
-    const result = await response.json();
-    console.log(result);
-    return result; // Retorna o resultado, incluindo o nível de acesso
+    if (response.ok) {
+      return await response.json();
+    }
+
+    return null;
   };
 
   const handleSend = async () => {

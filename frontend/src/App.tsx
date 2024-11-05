@@ -33,8 +33,18 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
   return user && user.access_level >= requiredLevel ? (
     <>{element}</>
   ) : (
-    <Navigate to="/" />
+    <Navigate to="/auth" />
   );
+};
+
+const AuthRoute: React.FC<{ element: ReactNode }> = ({ element }) => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
+
+  return user ? <Navigate to="/" /> : <>{element}</>;
 };
 
 function App() {
@@ -44,11 +54,8 @@ function App() {
         <Navbar />
         <div className="content">
           <Routes>
-            <Route path="/" element={<Auth />} />
-            <Route
-              path="/home"
-              element={<PrivateRoute element={<Home />} requiredLevel={1} />}
-            />
+            <Route path="/auth" element={<AuthRoute element={<Auth />} />} />
+            <Route path="/" element={<Home />} />
             <Route
               path="/nivel/1"
               element={<PrivateRoute element={<Nivel1 />} requiredLevel={1} />}

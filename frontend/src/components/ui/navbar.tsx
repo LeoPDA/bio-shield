@@ -19,19 +19,14 @@ const Navbar = () => {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Card className="container bg-card py-3 px-4 border-0 flex items-center justify-between gap-6 rounded-2xl mt-5">
-        <div className="flex items-center gap-2">
+        <Link className="flex items-center gap-2" to="/">
           <img src="/biohazard.png" alt="logo" className="w-10" />
           <span className="text-primary font-bold text-xl">Bio Shield</span>
-        </div>
+        </Link>
 
         <ul className="hidden md:flex items-center gap-10 text-card-foreground">
           <li className="text-primary font-medium">
-            <Link to="/home">
-              Home{" "}
-              {!(user && user.access_level >= 1) && (
-                <Lock className="inline ml-1" />
-              )}
-            </Link>
+            <Link to="/">Home</Link>
           </li>
           <li>
             <Link to="/nivel/1" className="flex">
@@ -109,7 +104,15 @@ const Navbar = () => {
 
           <div className="flex items-center gap-4">
             <ModeToggle />
-            {user && <UserNav user={user} logout={logout} />}
+            {user ? (
+              <UserNav user={user} logout={logout} />
+            ) : (
+              <Link to="/auth">
+                <Button variant="default" className="w-full text-sm">
+                  Login
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </Card>
