@@ -69,38 +69,40 @@ const Navbar = () => {
               </DropdownMenuTrigger>
 
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>
-                  <Link to="/home">
+                <Link to="/home">
+                  <DropdownMenuItem>
                     Home{" "}
                     {!(user && user.access_level >= 1) && (
                       <Lock className="inline ml-1" />
                     )}
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/nivel/1" className="flex">
+                  </DropdownMenuItem>
+                </Link>
+                <Link to="/nivel/1" className="flex">
+                  <DropdownMenuItem>
                     Nível 1{" "}
                     {!(user && user.access_level >= 1) && (
                       <Lock className="inline ml-1" />
                     )}
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/nivel/2" className="flex">
+                  </DropdownMenuItem>
+                </Link>
+
+                <Link to="/nivel/2" className="flex">
+                  <DropdownMenuItem>
                     Nível 2{" "}
                     {!(user && user.access_level >= 2) && (
                       <Lock className="inline ml-1" />
                     )}
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/nivel/3" className="flex">
+                  </DropdownMenuItem>
+                </Link>
+
+                <Link to="/nivel/3" className="flex">
+                  <DropdownMenuItem>
                     Nível 3{" "}
                     {!(user && user.access_level >= 3) && (
                       <Lock className="inline ml-1" />
                     )}
-                  </Link>
-                </DropdownMenuItem>
+                  </DropdownMenuItem>
+                </Link>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
