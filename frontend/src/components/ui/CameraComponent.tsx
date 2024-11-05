@@ -1,8 +1,8 @@
 import { useAuth } from "@/contexts/AuthContext"; // Importando o contexto de autenticação
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Button } from "./button";
-import { useNavigate } from "react-router-dom";
 
 interface CameraComponentProps {
   openDialog: React.Dispatch<React.SetStateAction<boolean>>;
