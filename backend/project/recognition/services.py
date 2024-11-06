@@ -79,7 +79,7 @@ class UserService:
         }, None
 
     @staticmethod
-    def upload_image_user(user_id, image):
+    def upload_image_user(user_id: int, image):
         try:
             user = models.User.objects.get(id=user_id)
         except models.User.DoesNotExist:
