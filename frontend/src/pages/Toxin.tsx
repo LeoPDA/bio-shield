@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 
 async function getData(id: string): Promise<Toxin> {
   const response = await fetch(
-    `http://bioshield.ukwest.cloudapp.azure.com/api/toxins/${id}`
+    `https://bioshield.ukwest.cloudapp.azure.com/api/toxins/${id}`
   );
 
   if (!response.ok) {

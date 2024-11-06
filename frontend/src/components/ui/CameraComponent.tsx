@@ -71,7 +71,7 @@ const CameraComponent: React.FC<CameraComponentProps> = ({ openDialog }) => {
     formData.append("image", blob, "captured_image.png");
 
     const response = await fetch(
-      "http://bioshield.ukwest.cloudapp.azure.com/api/recognition/auth/",
+      "https://bioshield.ukwest.cloudapp.azure.com/api/recognition/auth/",
       {
         method: "POST",
         body: formData,
