@@ -10,18 +10,18 @@ import {
 import { Camera } from "lucide-react";
 import { useState } from "react";
 
-import { useAuth } from "@/contexts/AuthContext";
-import { User } from "@/schemas/user-schema";
+// import { useAuth } from "@/contexts/AuthContext";
+// import { User } from "@/schemas/user-schema";
 
 const Auth = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const { login } = useAuth();
+  //const { login } = useAuth();
 
-  const handleLogin = (user: User) => {
-    login(user);
-    setIsDialogOpen(false); // Fechar o diálogo após login
-  };
+  // const handleLogin = (user: User) => {
+  //   login(user);
+  //   setIsDialogOpen(false); // Fechar o diálogo após login
+  // };
 
   return (
     <main className="min-h-screen flex items-center justify-center p-4">
