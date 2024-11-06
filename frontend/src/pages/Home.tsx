@@ -17,13 +17,13 @@ const Home = () => {
         </span>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-6">
-          <Card className="py-6 bg-green-100 px-4">
+          <Card className="py-6 bg-green-300 px-4">
             Nível 1: Acesso concedido a indivíduos com permissão geral.
           </Card>
-          <Card className="py-6 bg-yellow-100 px-4">
+          <Card className="py-6 bg-yellow-300 px-4">
             Nível 2: Acesso restrito a diretores de divisões.
           </Card>
-          <Card className="py-6 bg-red-100 px-4">
+          <Card className="py-6 bg-red-300 px-4">
             Nível 3: Acesso exclusivo ao ministro do Meio Ambiente.
           </Card>
         </div>
