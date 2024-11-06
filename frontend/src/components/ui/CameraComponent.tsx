@@ -87,27 +87,42 @@ const CameraComponent: React.FC<CameraComponentProps> = ({ openDialog }) => {
 
   const handleSend = async () => {
     if (capturedImage) {
+      let loadingSwal: any;
+
       try {
+        // Exibir o carregamento do SweetAlert
+        loadingSwal = Swal.fire({
+          title: 'Autenticando...',
+          text: 'Aguarde enquanto processamos sua imagem.',
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading(); // Exibe o ícone de loading
+          },
+        });
+
         const result = await sendToServer(capturedImage);
+
+        loadingSwal.close();
 
         if (result) {
           login(result); // Login com o nível de acesso retornado
           openDialog(false); // Fechar o diálogo após login
           Swal.fire({
             title: "Sucesso!",
-            text: "Imagem enviada com sucesso!",
+            text: "Imagem enviada com sucesso e login efetuado!",
             icon: "success",
             showConfirmButton: false,
-            timer: 1500,
+            timer: 2000,
           });
           navigate(`/nivel/${result.access_level}`);
         } else {
           Swal.fire({
             title: "Erro!",
-            text: "Não foi possível reconhecer a imagem.",
+            text: "Não foi possível reconhecer a imagem ou usuário.",
             icon: "error",
             showConfirmButton: false,
-            timer: 1500,
+            timer: 2000,
           });
         }
 
@@ -119,7 +134,7 @@ const CameraComponent: React.FC<CameraComponentProps> = ({ openDialog }) => {
           text: "Houve um problema ao enviar a imagem.",
           icon: "error",
           showConfirmButton: false,
-          timer: 1500,
+          timer: 2000,
         });
       }
     }
