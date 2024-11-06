@@ -14,16 +14,18 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+COPY pyproject.toml poetry.lock /usr/src/app/
+
 # update pip
 RUN pip install --upgrade pip
 
 # install Poetry
 RUN pip install poetry
 
-# copy project
-COPY . .
-
 # install dependencies
 RUN poetry install
+
+# copy project
+COPY . .
 
 CMD ["poetry", "run", "gunicorn", "project.wsgi:application", "--bind", "0.0.0.0:8000"]
