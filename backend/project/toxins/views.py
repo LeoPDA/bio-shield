@@ -5,6 +5,10 @@ from .serializers import ToxinSerializer
 
 
 class ToxinViewSet(viewsets.ModelViewSet):
+    """
+    A simple ViewSet for viewing and editing toxins.
+    """
+
     queryset = Toxin.objects.all()
     serializer_class = ToxinSerializer
     filterset_fields = {
