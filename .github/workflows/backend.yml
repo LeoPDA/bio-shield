@@ -22,6 +22,9 @@ jobs:
           SHA=$(echo $GITHUB_SHA | head -c7)
           echo "sha=${SHA}" >> $GITHUB_OUTPUT
 
+      - name: Build docker image
+        run: docker build -t ${{ secrets.DOCKERHUB_REPOSITORY}}:${{ steps.generate_sha.outputs.sha }} -f backend/Dockerfile .
+
       - name: Say Hello world
         run: echo "Hello world - Backend"
 
