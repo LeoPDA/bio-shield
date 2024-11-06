@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 async function getData(): Promise<Toxin[]> {
   const response = await fetch(
-    "http://localhost:8000/api/toxins?access_level=3"
+    "http://bioshield.ukwest.cloudapp.azure.com/api/toxins?access_level=3"
   );
 
   if (!response.ok) {

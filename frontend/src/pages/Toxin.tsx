@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 async function getData(id: string): Promise<Toxin> {
-  const response = await fetch(`http://localhost:8000/api/toxins/${id}`);
+  const response = await fetch(
+    `http://bioshield.ukwest.cloudapp.azure.com/api/toxins/${id}`
+  );
 
   if (!response.ok) {
     throw new Error("Failed to fetch data");
