@@ -13,6 +13,10 @@ class UserService:
 
         image_sent_array = face_recognition.load_image_file(image_sent)
 
+        face_locations = face_recognition.face_locations(image_sent_array)
+        if len(face_locations) > 1:
+            return "just_one_person" 
+
         try:
             image_sent_encoding = face_recognition.face_encodings(image_sent_array)[0]
         except IndexError:

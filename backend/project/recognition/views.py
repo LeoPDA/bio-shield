@@ -9,26 +9,35 @@ from .services import UserService
 class AuthenticateUserView(APIView):
     def post(self, request):
         try:
+
             if not (image_sent := request.FILES.get("image")):
                 return Response(
                     {"error": "image não fornecida."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
-            if not (user := UserService.authenticate_user(image_sent)):
-                # Caso nenhum usuário tenha sido encontrado
+            auth_result = UserService.authenticate_user(image_sent)
+
+            if auth_result == "just_one_person":
+                return Response(
+                    {"error": "Por favor, envie uma imagem com apenas uma pessoa."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            if not auth_result:
                 return Response(
                     {"error": "Usuário não encontrado."},
                     status=status.HTTP_404_NOT_FOUND,
                 )
-            user_data = UserSerializer(user).data
+
+            user_data = UserSerializer(auth_result).data
 
             return (
                 Response(
                     user_data,
                     status=status.HTTP_200_OK,
                 )
-                if user.access_level in [1, 2, 3]
+                if auth_result.access_level in [1, 2, 3]
                 else Response(
                     {"error": "Nível de acesso não autorizado."},
                     status=status.HTTP_403_FORBIDDEN,
