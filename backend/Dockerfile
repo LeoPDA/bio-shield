@@ -20,10 +20,18 @@ RUN pip install --upgrade pip
 # install Poetry
 RUN pip install poetry
 
+# copy entrypoint.sh
+COPY ./entrypoint.sh .
+RUN sed -i 's/\r$//g' /usr/src/app/entrypoint.sh
+RUN chmod +x /usr/src/app/entrypoint.sh
+
 # copy project
 COPY backend/ .
 
 # install dependencies
 RUN poetry install
+
+# run entrypoint.sh
+ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
 
 CMD ["poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
