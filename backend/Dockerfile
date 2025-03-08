@@ -21,7 +21,7 @@ RUN pip install --upgrade pip
 RUN pip install poetry
 
 # copy entrypoint.sh
-COPY ./entrypoint.sh .
+COPY backend/entrypoint.sh .
 RUN sed -i 's/\r$//g' /usr/src/app/entrypoint.sh
 RUN chmod +x /usr/src/app/entrypoint.sh
 
